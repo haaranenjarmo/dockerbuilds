@@ -2,7 +2,7 @@
 
 LABEL Author="Jarmo Haaranen" \
     Twitter="@HaaranenJarmo" \
-    Email="jarmo@haaranen.net"
+    Email="jarmo[at]haaranen.net"
 
 ENV PS_VER=7
 ENV PS_URL=https://github.com/PowerShell/PowerShell/releases/download/v${PS_VER}.0.0/powershell-${PS_VER}.0.0-linux-alpine-x64.tar.gz
