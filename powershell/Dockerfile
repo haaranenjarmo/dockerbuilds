@@ -10,20 +10,8 @@ ENV PS_TEMP_FILE=/tmp/powershell.tar.gz
 ENV PS_HOME=/opt/microsoft/powershell/${PS_VER}
 ENV PS_BIN=${PS_HOME}/pwsh
 
-RUN apk add --no-cache \
-    ca-certificates \
-    less \
-    ncurses-terminfo-base \
-    krb5-libs \
-    libgcc \
-    libintl \
-    libssl1.1 \
-    libstdc++ \
-    tzdata \
-    userspace-rcu \
-    zlib \
-    icu-libs \
-    curl
+RUN apk add --no-cache ca-certificates less ncurses-terminfo-base krb5-libs \
+    libgcc libintl libssl1.1 libstdc++ tzdata userspace-rcu zlib icu-libs curl
 
 #Add lttng-ust package from alpine/edge repo
 RUN apk -X https://dl-cdn.alpinelinux.org/alpine/edge/main add --no-cache lttng-ust
