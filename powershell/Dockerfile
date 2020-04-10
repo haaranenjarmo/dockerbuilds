@@ -10,6 +10,9 @@ ENV PS_TEMP_FILE=/tmp/powershell.tar.gz
 ENV PS_HOME=/opt/microsoft/powershell/${PS_VER}
 ENV PS_BIN=${PS_HOME}/pwsh
 
+# Create a group and user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 RUN apk add --no-cache ca-certificates less ncurses-terminfo-base krb5-libs \
     libgcc libintl libssl1.1 libstdc++ tzdata userspace-rcu zlib icu-libs curl
 
@@ -27,3 +30,6 @@ RUN curl -L ${PS_URL} -o ${PS_TEMP_FILE} \
 #Set PSGallery as trusted repository and install Azure modules to all users scope
 RUN pwsh -NoProfile -ExecutionPolicy ByPass -Command Set-PSRepository -Name PSGallery -InstallationPolicy Trusted \
     && pwsh -NoProfile -ExecutionPolicy ByPass -Command Install-Module -Name Az -Scope AllUsers
+
+# Tell docker that all future commands should run as the appuser user
+USER appuser
