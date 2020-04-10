@@ -1,4 +1,4 @@
-﻿FROM jarmohaaranen/alpine/powershell:latest
+﻿FROM jarmohaaranen/powershell:latest
 
 LABEL Author="Jarmo Haaranen" \
     Twitter="@HaaranenJarmo" \
@@ -6,6 +6,9 @@ LABEL Author="Jarmo Haaranen" \
 
 #Python
 ENV PYTHONUNBUFFERED=1
+
+# Create a group and user
+RUN addgroup -S ansible && adduser -S ansible -G ansible
 
 #Install pip3 and it's depencies
 ##Copied mainly here https://github.com/Docker-Hub-frolvlad/docker-alpine-python3/blob/master/Dockerfile
@@ -21,6 +24,13 @@ RUN echo "**** install Python ****" && \
     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
     apk --update add python3-dev libffi-dev openssl-dev build-base
 
-RUN pip3 install --upgrade pip cffi && \
-    pip3 install ansible[azure] && \
-    pip3 install pywinrm
+RUN pip3 install --upgrade pip cffi
+
+USER ansible
+
+#Fix The script chardetect is installed in '/home/ansible/.local/bin' which is not on PATH.
+ENV PATH="/home/ansible/.local/bin:${PATH}"
+
+#Install ansible
+RUN pip3 install ansible[azure] --user && \
+    pip3 install pywinrm --user
